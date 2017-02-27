@@ -18,4 +18,8 @@ class Patient(object):
         self.weight_at_labour = weight_at_labour
         self.child_weight = child_weight
         self.pregnancy_time = pregnancy_time
+        self.BMI_initially = weight_initially / (height * height)
+        self.BMI_at_labour = weight_at_labour / (height * height)
+        self.delta_BMI = self.BMI_at_labour - self.BMI_initially
+        self.delta_weight = weight_at_labour - weight_initially
 
