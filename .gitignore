@@ -90,3 +90,6 @@ ENV/
 
 # Pycharm project
 .idea/
+
+# other
+*.jpg
