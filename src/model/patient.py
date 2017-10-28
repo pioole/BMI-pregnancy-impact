@@ -28,3 +28,7 @@ class Patient(object):
         self.number_of_miscarriages = number_of_miscarriages
         self.thrombosis_risk = thrombosis_risk
 
+        self.hipotrophic_child = self.child_weight < 2500
+        self.macrosomic_child = self.child_weight > 4500
+        self.preterm_birth = self.pregnancy_time <= 258
+
