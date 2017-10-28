@@ -1,7 +1,8 @@
 
 
 class Patient(object):
-    def __init__(self, age, height, weight_initially, weight_at_labour, child_weight, pregnancy_time):
+    def __init__(self, age, height, weight_initially, weight_at_labour, child_weight, pregnancy_time, number_of_labours,
+                 number_of_miscarriages, thrombosis_risk):
         """
         creates a new Patient
         :param age: Int, years
@@ -22,4 +23,8 @@ class Patient(object):
         self.BMI_at_labour = weight_at_labour / (height * height)
         self.delta_BMI = self.BMI_at_labour - self.BMI_initially
         self.delta_weight = weight_at_labour - weight_initially
+        self.weight_change_percentage = 100. * weight_at_labour / weight_initially
+        self.number_of_labours = number_of_labours
+        self.number_of_miscarriages = number_of_miscarriages
+        self.thrombosis_risk = thrombosis_risk
 

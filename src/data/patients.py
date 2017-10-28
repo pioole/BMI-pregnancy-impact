@@ -22,7 +22,11 @@ class PatientReader(object):
                 pregnancy_time_weeks = int(data[5].strip().split('+')[0])
                 pregnancy_time_additional_days = int(data[5].strip().split('+')[1]) if '+' in data[5] else 0
                 pregnancy_time = pregnancy_time_weeks * 7 + pregnancy_time_additional_days
-                return Patient(age, height, weight_initially, weight_at_labour, child_weight, pregnancy_time)
+                number_of_labours = int(data[7])
+                number_of_miscarriages = int(data[6]) - int(data[7])
+                thrombosis_risk = int(data[8])
+                return Patient(age, height, weight_initially, weight_at_labour, child_weight, pregnancy_time,
+                               number_of_labours, number_of_miscarriages, thrombosis_risk)
             except ValueError as e:
                 logging.error('error: {} in {}'.format(e, data))
         return None
