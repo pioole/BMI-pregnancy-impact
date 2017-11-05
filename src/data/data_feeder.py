@@ -46,6 +46,23 @@ class DataFeeder(object):
         except ZeroDivisionError:
             return -1
 
+    # statistics
+
+    def get_hipotrophic_chance(self):
+        return 1. * len([patient for patient in self.patient_list if patient.hipotrophic_child]) / len([patient for patient in self.patient_list if not patient.hipotrophic_child])
+
+    def get_macrosomic_chance(self):
+        return 1. * len([patient for patient in self.patient_list if patient.macrosomic_child]) / len([patient for patient in self.patient_list if not patient.macrosomic_child])
+
+    def get_premature_birth_chance(self):
+        return 1. * len([patient for patient in self.patient_list if patient.preterm_birth]) / len([patient for patient in self.patient_list if not patient.preterm_birth])
+
+    def get_10_percentile_chance(self):
+        return 1. * len([patient for patient in self.patient_list if patient.under_10_percentile]) / len([patient for patient in self.patient_list if not patient.under_10_percentile])
+
+    def get_90_percentile_chance(self):
+        return 1. * len([patient for patient in self.patient_list if patient.over_90_percentile]) / len([patient for patient in self.patient_list if not patient.over_90_percentile])
+
     # lists
 
     def get_initial_weight_list(self):

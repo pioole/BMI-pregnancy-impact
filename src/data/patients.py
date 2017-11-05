@@ -12,7 +12,7 @@ class PatientReader(object):
         :param data: list of values [age (y), height (m), weight at labour (kg), weight initially (kg), child weight (g), pregnancy time in format "weeks+days" || "weeks"
         :return: Patient || None
         """
-        if all(data):
+        if True: #all(data):
             try:
                 age = int(data[0])
                 height = float(data[1].replace(',', '.'))
@@ -24,7 +24,8 @@ class PatientReader(object):
                 pregnancy_time = pregnancy_time_weeks * 7 + pregnancy_time_additional_days
                 number_of_labours = int(data[7])
                 number_of_miscarriages = int(data[6]) - int(data[7])
-                thrombosis_risk = int(data[8])
+                # thrombosis_risk = int(data[8])
+                thrombosis_risk = 0
                 return Patient(age, height, weight_initially, weight_at_labour, child_weight, pregnancy_time,
                                number_of_labours, number_of_miscarriages, thrombosis_risk)
             except ValueError as e:

@@ -40,6 +40,7 @@ def run_statistics(patient_list):
     method = lambda x, y: y[0] <= x < y[1]
 
     feeders = generate_feeder(patient_list, lambda x: x.BMI_initially, method, intervals)
+    control_group = feeders[1]
 
     run_multiple_plotter('weight_change_percentage_to_child_weight_GROUPS',
                          feeders,
@@ -68,6 +69,51 @@ def run_statistics(patient_list):
     calculate_in_groups('mean_time_of_pregnancy_in_GROUPS_BMI_INITIALLY', feeders, lambda x: x.get_mean_length_of_pregnancy())
     calculate_in_groups('count_of_early_births_in_GROUPS_BMI_INITIALLY', feeders, lambda x: (x.get_count_of_early_births(), 'z', x.get_number_of_patients(), '->', 1.*x.get_count_of_early_births()/x.get_number_of_patients(), '%'))
     calculate_in_groups('mean_thrombosis_in_GROUPS_BMI_INITIALLY', feeders, lambda x: x.get_mean_thrombosis_risk())
+
+    chance_0 = feeders[0].get_hipotrophic_chance()
+    chance_1 = feeders[1].get_hipotrophic_chance()
+    chance_2 = feeders[2].get_hipotrophic_chance()
+    chance_3 = feeders[3].get_hipotrophic_chance()
+
+    print 'hipotrophic:'
+    print chance_0, chance_1, chance_2, chance_3
+    print chance_0/chance_1, chance_1/chance_1, chance_2/chance_1, chance_3/chance_1
+
+    chance_0 = feeders[0].get_macrosomic_chance()
+    chance_1 = feeders[1].get_macrosomic_chance()
+    chance_2 = feeders[2].get_macrosomic_chance()
+    chance_3 = feeders[3].get_macrosomic_chance()
+
+    print 'macrosomic'
+    print chance_0, chance_1, chance_2, chance_3
+    print chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
+
+    chance_0 = feeders[0].get_premature_birth_chance()
+    chance_1 = feeders[1].get_premature_birth_chance()
+    chance_2 = feeders[2].get_premature_birth_chance()
+    chance_3 = feeders[3].get_premature_birth_chance()
+
+    print 'preterm'
+    print chance_0, chance_1, chance_2, chance_3
+    print chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
+
+    chance_0 = feeders[0].get_10_percentile_chance()
+    chance_1 = feeders[1].get_10_percentile_chance()
+    chance_2 = feeders[2].get_10_percentile_chance()
+    chance_3 = feeders[3].get_10_percentile_chance()
+
+    print 'under 10 percentile:'
+    print chance_0, chance_1, chance_2, chance_3
+    print chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
+
+    chance_0 = feeders[0].get_90_percentile_chance()
+    chance_1 = feeders[1].get_90_percentile_chance()
+    chance_2 = feeders[2].get_90_percentile_chance()
+    chance_3 = feeders[3].get_90_percentile_chance()
+
+    print 'over 90 percentile'
+    print chance_0, chance_1, chance_2, chance_3
+    print chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
 
     ######### GROUPS 2
 
