@@ -51,17 +51,65 @@ class DataFeeder(object):
     def get_hipotrophic_chance(self):
         return 1. * len([patient for patient in self.patient_list if patient.hipotrophic_child]) / len([patient for patient in self.patient_list if not patient.hipotrophic_child])
 
+    def get_hipotrophic_positive(self):
+        return len([patient for patient in self.patient_list if patient.hipotrophic_child])
+
+    def get_hipotrophic_negative(self):
+        return len([patient for patient in self.patient_list if not patient.hipotrophic_child])
+
     def get_macrosomic_chance(self):
         return 1. * len([patient for patient in self.patient_list if patient.macrosomic_child]) / len([patient for patient in self.patient_list if not patient.macrosomic_child])
+
+    def get_macrosomic_positive(self):
+        return len([patient for patient in self.patient_list if patient.macrosomic_child])
+
+    def get_macrosomic_negative(self):
+        return len([patient for patient in self.patient_list if not patient.macrosomic_child])
 
     def get_premature_birth_chance(self):
         return 1. * len([patient for patient in self.patient_list if patient.preterm_birth]) / len([patient for patient in self.patient_list if not patient.preterm_birth])
 
+    def get_premature_birth_positive(self):
+        return len([patient for patient in self.patient_list if patient.preterm_birth])
+
+    def get_premature_birth_negative(self):
+        return len([patient for patient in self.patient_list if not patient.preterm_birth])
+
     def get_10_percentile_chance(self):
         return 1. * len([patient for patient in self.patient_list if patient.under_10_percentile]) / len([patient for patient in self.patient_list if not patient.under_10_percentile])
 
+    def get_10_percentile_positive(self):
+        return len([patient for patient in self.patient_list if patient.under_10_percentile])
+
+    def get_10_percentile_negative(self):
+        return len([patient for patient in self.patient_list if not patient.under_10_percentile])
+
     def get_90_percentile_chance(self):
-        return 1. * len([patient for patient in self.patient_list if patient.over_90_percentile]) / len([patient for patient in self.patient_list if not patient.over_90_percentile])
+        return 1. * self.get_90_percentile_positive() / self.get_90_percentile_negative()
+
+    def get_90_percentile_positive(self):
+        return len([patient for patient in self.patient_list if patient.over_90_percentile])
+
+    def get_90_percentile_negative(self):
+        return len([patient for patient in self.patient_list if not patient.over_90_percentile])
+
+    def get_not_planned_t_section_chance(self):
+        return 1. * self.get_not_planned_t_section_positive() / self.get_not_planned_t_section_negative()
+
+    def get_not_planned_t_section_positive(self):
+        return len([patient for patient in self.patient_list if patient.t_section and not patient.t_section_planned])
+
+    def get_not_planned_t_section_negative(self):
+        return len([patient for patient in self.patient_list if not patient.t_section and not patient.t_section_planned])
+
+    def get_t_section_chance(self):
+        return 1. * self.get_t_section_positive() / self.get_t_section_negative()
+
+    def get_t_section_positive(self):
+        return len([patient for patient in self.patient_list if patient.t_section])
+
+    def get_t_section_negative(self):
+        return len([patient for patient in self.patient_list if not patient.t_section])
 
     # lists
 

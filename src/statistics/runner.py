@@ -1,3 +1,5 @@
+import math
+
 from src.data.data_feeder import DataFeeder
 from src.visualization.plotter import simple_plot, plot_and_save, plot_and_save_multiple
 
@@ -70,50 +72,73 @@ def run_statistics(patient_list):
     calculate_in_groups('count_of_early_births_in_GROUPS_BMI_INITIALLY', feeders, lambda x: (x.get_count_of_early_births(), 'z', x.get_number_of_patients(), '->', 1.*x.get_count_of_early_births()/x.get_number_of_patients(), '%'))
     calculate_in_groups('mean_thrombosis_in_GROUPS_BMI_INITIALLY', feeders, lambda x: x.get_mean_thrombosis_risk())
 
-    chance_0 = feeders[0].get_hipotrophic_chance()
-    chance_1 = feeders[1].get_hipotrophic_chance()
-    chance_2 = feeders[2].get_hipotrophic_chance()
-    chance_3 = feeders[3].get_hipotrophic_chance()
+    def count_ORs(name, method, method_positive, method_negative):
+        print name
+        chance_0 = method(feeders[0])
+        chance_1 = method(feeders[1])
+        chance_2 = method(feeders[2])
+        chance_3 = method(feeders[3])
 
-    print 'hipotrophic:'
-    print chance_0, chance_1, chance_2, chance_3
-    print chance_0/chance_1, chance_1/chance_1, chance_2/chance_1, chance_3/chance_1
+        print "chances: ", chance_0, chance_1, chance_2, chance_3
+        or1, or2, or3, or4 = chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
+        print "ORs: ", or1, or2, or3, or4
 
-    chance_0 = feeders[0].get_macrosomic_chance()
-    chance_1 = feeders[1].get_macrosomic_chance()
-    chance_2 = feeders[2].get_macrosomic_chance()
-    chance_3 = feeders[3].get_macrosomic_chance()
+        a1 = method_positive(feeders[0])
+        b1 = method_negative(feeders[0])
+        a3 = method_positive(feeders[2])
+        b3 = method_negative(feeders[2])
+        a4 = method_positive(feeders[3])
+        b4 = method_negative(feeders[3])
 
-    print 'macrosomic'
-    print chance_0, chance_1, chance_2, chance_3
-    print chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
+        c = method_positive(feeders[1])
+        d = method_negative(feeders[1])
 
-    chance_0 = feeders[0].get_premature_birth_chance()
-    chance_1 = feeders[1].get_premature_birth_chance()
-    chance_2 = feeders[2].get_premature_birth_chance()
-    chance_3 = feeders[3].get_premature_birth_chance()
+        try:
+            SE = math.sqrt(1./a1 + 1./b1 + 1./c + 1./d)
+            bottom = math.exp(math.log(or1) - 1.96*SE)
+            top = math.exp(math.log(or1) + 1.96 * SE)
+            print "group 1: ", bottom, top
+        except ZeroDivisionError:
+            pass
 
-    print 'preterm'
-    print chance_0, chance_1, chance_2, chance_3
-    print chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
+        try:
+            SE = math.sqrt(1. / a3 + 1. / b3 + 1. / c + 1. / d)
+            bottom = math.exp(math.log(or3) - 1.96 * SE)
+            top = math.exp(math.log(or3) + 1.96 * SE)
+            print "group 3: ", bottom, top
+        except ZeroDivisionError:
+            pass
+        try:
+            SE = math.sqrt(1. / a4 + 1. / b4 + 1. / c + 1. / d)
+            bottom = math.exp(math.log(or4) - 1.96 * SE)
+            top = math.exp(math.log(or4) + 1.96 * SE)
+            print "group 4: ", bottom, top
+        except ZeroDivisionError:
+            pass
 
-    chance_0 = feeders[0].get_10_percentile_chance()
-    chance_1 = feeders[1].get_10_percentile_chance()
-    chance_2 = feeders[2].get_10_percentile_chance()
-    chance_3 = feeders[3].get_10_percentile_chance()
+        print
 
-    print 'under 10 percentile:'
-    print chance_0, chance_1, chance_2, chance_3
-    print chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
+    count_ORs("not planned t section chance", lambda x: x.get_not_planned_t_section_chance(),
+              lambda x: x.get_not_planned_t_section_positive(), lambda x: x.get_not_planned_t_section_negative())
 
-    chance_0 = feeders[0].get_90_percentile_chance()
-    chance_1 = feeders[1].get_90_percentile_chance()
-    chance_2 = feeders[2].get_90_percentile_chance()
-    chance_3 = feeders[3].get_90_percentile_chance()
+    count_ORs("t section chance", lambda x: x.get_t_section_chance(),
+              lambda x: x.get_t_section_positive(), lambda x: x.get_t_section_negative())
 
-    print 'over 90 percentile'
-    print chance_0, chance_1, chance_2, chance_3
-    print chance_0 / chance_1, chance_1 / chance_1, chance_2 / chance_1, chance_3 / chance_1
+    count_ORs("over 90 percentile", lambda x: x.get_90_percentile_chance(),
+              lambda x: x.get_90_percentile_positive(), lambda x: x.get_90_percentile_negative())
+
+    count_ORs("hipotrophic", lambda x: x.get_hipotrophic_chance(),
+              lambda x: x.get_hipotrophic_positive(), lambda x: x.get_hipotrophic_negative())
+
+    count_ORs("macrosomic", lambda x: x.get_macrosomic_chance(),
+              lambda x: x.get_macrosomic_positive(), lambda x: x.get_macrosomic_negative())
+
+    count_ORs("prebirth", lambda x: x.get_premature_birth_chance(),
+              lambda x: x.get_premature_birth_positive(), lambda x: x.get_premature_birth_negative())
+
+    count_ORs("under 10 percentile", lambda x: x.get_10_percentile_chance(),
+              lambda x: x.get_10_percentile_positive(), lambda x: x.get_10_percentile_negative())
+
 
     ######### GROUPS 2
 

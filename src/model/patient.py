@@ -39,7 +39,7 @@ calc = PercentileCalculator()
 
 class Patient(object):
     def __init__(self, age, height, weight_initially, weight_at_labour, child_weight, pregnancy_time, number_of_labours,
-                 number_of_miscarriages, thrombosis_risk):
+                 number_of_miscarriages, thrombosis_risk, t_section, t_section_planned):
         """
         creates a new Patient
         :param age: Int, years
@@ -64,6 +64,8 @@ class Patient(object):
         self.number_of_labours = number_of_labours
         self.number_of_miscarriages = number_of_miscarriages
         self.thrombosis_risk = thrombosis_risk
+        self.t_section = t_section
+        self.t_section_planned = t_section_planned
 
         self.hipotrophic_child = self.child_weight < 2500
         self.macrosomic_child = self.child_weight > 4500
