@@ -12,6 +12,9 @@ class DataFeeder(object):
 
     # defaults
 
+    def get_age_mean(self):
+        return np.mean(self.get_age_list())
+
     def get_number_of_patients(self):
         return len(self.patient_list)
 
@@ -112,6 +115,9 @@ class DataFeeder(object):
         return len([patient for patient in self.patient_list if not patient.t_section])
 
     # lists
+
+    def get_age_list(self):
+        return [patient.age for patient in self.patient_list]
 
     def get_initial_weight_list(self):
         return [patient.weight_initially for patient in self.patient_list]

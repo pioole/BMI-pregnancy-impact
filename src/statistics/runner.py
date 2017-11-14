@@ -139,6 +139,24 @@ def run_statistics(patient_list):
     count_ORs("under 10 percentile", lambda x: x.get_10_percentile_chance(),
               lambda x: x.get_10_percentile_positive(), lambda x: x.get_10_percentile_negative())
 
+    calculate_in_groups('age_mean', feeders, lambda x: x.get_age_mean())
+
+    age_list_0 = feeders[0].get_age_list()
+    age_list_1 = feeders[1].get_age_list()
+    age_list_2 = feeders[2].get_age_list()
+    age_list_3 = feeders[3].get_age_list()
+    age_lists = {"chude": age_list_0, "normal": age_list_1, "grube": age_list_2, "otyle": age_list_3}
+
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html
+    from itertools import combinations
+    from scipy.stats import ttest_ind
+    for list1, list2 in combinations(age_lists.keys(), 2):
+        t, p = ttest_ind(age_lists[list1], age_lists[list2])
+        print list1, list2, p
+
+    print
+
+
 
     ######### GROUPS 2
 
