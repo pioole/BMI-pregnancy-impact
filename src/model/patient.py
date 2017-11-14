@@ -29,7 +29,6 @@ class PercentileCalculator(object):
     def calculate_percentile(self, weight, pregnancy_time):
         week = (pregnancy_time - 1) / 7 + 1
         if week > 40:
-            print pregnancy_time % 7, week
             week = 40
         return self.week_percentiles[week].get_percentile(weight)
 
