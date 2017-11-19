@@ -1,5 +1,8 @@
 import math
 
+from scipy.stats import f_oneway, kruskal
+from scipy.stats import mstats
+
 from src.data.data_feeder import DataFeeder
 from src.visualization.plotter import simple_plot, plot_and_save, plot_and_save_multiple
 
@@ -50,7 +53,7 @@ def run_statistics(patient_list):
                          lambda x: x.get_initial_BMI_list(),
                          lambda x: x.get_thrombosis_risk_list())
 
-    calculate_in_groups('standard_deviation_in_GROUPS', feeders, lambda x: x.get_child_weight_standard_deviation())
+    calculate_in_groups('standard_deviation_in_GROUPS_child_weight', feeders, lambda x: x.get_child_weight_standard_deviation())
     calculate_in_groups('mean_in_GROUPS', feeders, lambda x: x.get_child_weight_mean())
     calculate_in_groups('percentage_of_first_timers_in_GROUPS', feeders, lambda x: x.get_percentage_of_first_timers())
     calculate_in_groups('number_of_patients_in_GROUPS', feeders, lambda x: x.get_number_of_patients())
@@ -139,6 +142,21 @@ def run_statistics(patient_list):
         t, p = ttest_ind(age_lists[list1], age_lists[list2])
         print list1, list2, p
 
+    print
+
+    calculate_in_groups('standard_deviation_in_GROUPS_mother_age', feeders,
+                        lambda x: x.get_mother_age_standard_deviation())
+    print
+    print "normaltest chude: ", mstats.normaltest(age_list_0)
+    print "normaltest normal: ", mstats.normaltest(age_list_1)
+    print "normaltest grube: ", mstats.normaltest(age_list_2)
+    print "normaltest otyle: ", mstats.normaltest(age_list_3)
+    print
+    print "ANOVA one way for mother age:"
+    print f_oneway(age_list_0, age_list_1, age_list_2, age_list_3)
+    print
+    print "Kruskal Wallis for mother age:"
+    print kruskal(age_list_0, age_list_1, age_list_2, age_list_3)
     print
 
 
