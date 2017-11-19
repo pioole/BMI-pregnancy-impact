@@ -27,6 +27,9 @@ class DataFeeder(object):
     def get_child_weight_standard_deviation(self):
         return np.std([patient.child_weight for patient in self.patient_list])
 
+    def get_mother_age_standard_deviation(self):
+        return np.std([patient.age for patient in self.patient_list])
+
     def get_child_weight_mean(self):
         return np.mean([patient.child_weight for patient in self.patient_list])
 

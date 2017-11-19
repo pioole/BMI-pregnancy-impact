@@ -53,3 +53,16 @@ class PatientReader(object):
                             for x in file_reader]
             logging.info('{} invalid lines'.format(patient_list.count(None)))
         return filter(lambda x: x is not None, patient_list)
+
+    @staticmethod
+    def export_to_csv(path_to_csv, patient_list):
+        """
+
+        :param patient_list:
+        :param path_to_csv: String
+        """
+        with open(path_to_csv, 'wb') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow(['wiek', 'wzrost w m', 'waga przed ciaza', 'masa ur dziecka', 'ilosc poronien', 'ilosc porodow', 'cesarskie ciecie', 'cesarskie ciecie bylo planowane', 'czas trwania ciazy w dniach', 'percentyl'])
+            for patient in patient_list:
+                writer.writerow([patient.age, patient.height, patient.weight_initially, patient.child_weight, patient.number_of_miscarriages, patient.number_of_labours, int(patient.t_section), int(patient.t_section_planned), patient.pregnancy_time, patient.percentile])
